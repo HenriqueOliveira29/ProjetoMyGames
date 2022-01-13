@@ -1,16 +1,26 @@
 import React from 'react'
 import styled from 'styled-components'
 import Appbar from '../Appbar';
+import axios from 'axios';
+import { useEffect , useState} from 'react';
+import {Formik, Form, Field, ErrorMessage} from 'formik';
+import * as Yup from "yup"
 
 
 export default function PaginaInicial() {
+    
     return (
-        <><Appbar /><Container>
+        <><Appbar />
+        <Container>
+            <Title>
             <h1>Play your favorite </h1>
             <h1>Games</h1>
             <h2>Have fun.</h2>
-            <img src="/images/jogos.png" alt=""></img>
-        </Container></>
+            </Title>
+            <Img src= "/images/jogos.png" alt = ""></Img>
+        </Container>
+        
+        </>
 
 
     );
@@ -18,19 +28,19 @@ export default function PaginaInicial() {
 }
 
 const Container = styled.div`
-    h1{
-       width:50%;
-       height:60%;
-    }
-    h2{
-       width:50%;
-       height:60%;
-       font-weight:300;
-    }
-    img{
-        width:45%;
-        top:0;
-        padding: 0 20px;  
-    }
-    `
+  
+    width: 100vw;
+    align-items: center;
+    justify-content: space-between;
+    overflow-x: hidden;
+
+
+`
+
+const Title = styled.div`
+    margin: 50px
+`
+
+const Img = styled.img`
+`
 
