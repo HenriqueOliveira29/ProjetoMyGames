@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Appbar = () => {
+export default function AppBarUser() {
     return (
         <Container>
             <Navbar>
@@ -13,10 +13,13 @@ const Appbar = () => {
                     
                 </Logo>
                 <Routes>
-                    <Link to={"/login"} style={{ textDecoration: 'none' }}><Route>Login</Route></Link>
-                    <Link to={"/createAccount"} style={{ textDecoration: 'none' }}><Route>CreateAccount</Route></Link>
+                    <Route>
+                        <p>User Name</p> 
+                        <img src='https://cdn-icons.flaticon.com/png/512/552/premium/552848.png?token=exp=1641641627~hmac=2036b8a268f234d5d28ed1451809e8da' alt=''>
+                        </img>
+                    </Route>
                 </Routes>
-
+            
 
 
 
@@ -26,8 +29,6 @@ const Appbar = () => {
     )
 }
 
-export default Appbar
-
 const Container = styled.div`
 width: 100vw;
 height: 10vh;
@@ -36,6 +37,7 @@ margin: 0;
 display: flex;
 align-items: center;
 justify-content: center;
+
 `
 
 const Navbar = styled.div`
@@ -65,5 +67,17 @@ const Route = styled.div`
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img{
+        margin-left: 5px;
+        width: 40px;
+        height: 40px;
+        color: white;
+    }
 `
+
+
 
