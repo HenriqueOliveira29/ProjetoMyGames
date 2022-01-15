@@ -1,9 +1,25 @@
-import React from 'react'
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Appbar from '../Appbar'
 
 function LoginPage() {
+
+    const [loginEmail, setLoginEmail] = useState("");
+    const [loginPassword, setLoginPassword] = useState("");
+
+
+    const login = async () => {
+        try {
+            const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+            console.log(user)
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+    }
+
     return (
         <Container>
             <Appbar></Appbar>
@@ -12,12 +28,12 @@ function LoginPage() {
             <form method="post">
                 <Inputs>
                     <div>
-                        <input type="email" required></input>
+                        <input type="email" required onChange={(event) => { setLoginEmail(event.target.value) }}></input>
                         <span></span>
                         <label>Email</label>
                     </div>
                     <div>
-                        <input type="password" required></input>
+                        <input type="password" required onChange={(event) => { setLoginPassword(event.target.value) }}></input>
                         <span></span>
                         <label>Password</label>
                     </div>
@@ -25,7 +41,7 @@ function LoginPage() {
                 <Pass>
                     <div>Forgot Password?</div>
 
-                    <input type="submit" value="Login"></input>
+                    <Link to={"/index"}><input type="submit" value="Login" onClick={login}></input></Link>
                 </Pass>
                 <SignUp>
                     <div>
