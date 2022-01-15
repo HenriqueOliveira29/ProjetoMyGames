@@ -3,10 +3,22 @@ import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import Login from './login';
 import CreateAccount from './createAccount';
 import PaginaInicial from './paginaInicial';
+import IndexAdmin from './adminGui/index'
 import Index from './userGui';
 import Quiz from './userGui/Quiz';
 import Hangman from './userGui/Hangman';
 import Guess from './userGui/Guess';
+import AdivinhaAdmin from './adminGui/AdivinhaAdmin';
+import Forca from './adminGui/ForcaAdmin';
+import Quizadmin from './adminGui/Quizadmin';
+import AdivinhaUpdate from './adminGui/AdivinhaUpdate';
+import Adivinhacreate from './adminGui/Adivinhacreate';
+import Forcacreate from './adminGui/ForcaCreate';
+import Forcaupdate from './adminGui/ForcaUpdate';
+import Quizcreate from './adminGui/QuizCreate';
+import Quizupdate from './adminGui/Quizupdate';
+
+
 
 function Routes2() {
     return (
@@ -19,6 +31,17 @@ function Routes2() {
                 <Route exact path="/guessWhat" element={<Guess/>}></Route>
                 <Route exact path="/hangman" element={<Hangman/>}></Route>
                 <Route exact path="/quiz" element={<Quiz/>}></Route>
+                <Route exact path='/admin' element={<IndexAdmin></IndexAdmin>}></Route>
+                <Route exact path='/admin/adivinha' element={<AdivinhaAdmin></AdivinhaAdmin>}></Route>
+                <Route exact path='/admin/forca' element={<Forca></Forca>}></Route>
+                <Route exact path='/admin/quiz' element={<Quizadmin></Quizadmin>}></Route>
+                <Route exact path='/admin/updateadivinha/:id_adivinha' element={<AdivinhaUpdate></AdivinhaUpdate>}></Route>
+                <Route exact path='/admin/adivinha/createadivinha' element={<Adivinhacreate/>}></Route>
+                <Route exact path='/admin/forca/updateforca/:id_forca' element={<Forcaupdate></Forcaupdate>}></Route>
+                <Route exact path='/admin/forca/createForca' element={<Forcacreate/>}></Route>
+                <Route exact path='/admin/quiz/updatequiz/:id_quiz' element={<Quizupdate></Quizupdate>}></Route>
+                <Route exact path='/admin/quiz/createQuiz' element={<Quizcreate/>}></Route>
+                
             </Routes>
         </BrowserRouter>
     );
