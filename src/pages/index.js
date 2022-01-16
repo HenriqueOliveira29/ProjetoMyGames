@@ -17,6 +17,8 @@ import Forcacreate from './adminGui/ForcaCreate';
 import Forcaupdate from './adminGui/ForcaUpdate';
 import Quizcreate from './adminGui/QuizCreate';
 import Quizupdate from './adminGui/Quizupdate';
+import { auth } from "./firebase-config";
+
 
 
 
@@ -35,11 +37,11 @@ function Routes2() {
                 <Route exact path='/admin/adivinha' element={<AdivinhaAdmin></AdivinhaAdmin>}></Route>
                 <Route exact path='/admin/forca' element={<Forca></Forca>}></Route>
                 <Route exact path='/admin/quiz' element={<Quizadmin></Quizadmin>}></Route>
-                <Route exact path='/admin/updateadivinha/:id_adivinha' element={<AdivinhaUpdate></AdivinhaUpdate>}></Route>
+                <Route exact path='/admin/updateadivinha/:id' element={<AdivinhaUpdate></AdivinhaUpdate>}></Route>
                 <Route exact path='/admin/adivinha/createadivinha' element={<Adivinhacreate/>}></Route>
-                <Route exact path='/admin/forca/updateforca/:id_forca' element={<Forcaupdate></Forcaupdate>}></Route>
+                <Route exact path='/admin/forca/updateforca/:id' element={<Forcaupdate></Forcaupdate>}></Route>
                 <Route exact path='/admin/forca/createForca' element={<Forcacreate/>}></Route>
-                <Route exact path='/admin/quiz/updatequiz/:id_quiz' element={<Quizupdate></Quizupdate>}></Route>
+                <Route exact path='/admin/quiz/updatequiz/:id' element={<Quizupdate></Quizupdate>}></Route>
                 <Route exact path='/admin/quiz/createQuiz' element={<Quizcreate/>}></Route>
                 
             </Routes>

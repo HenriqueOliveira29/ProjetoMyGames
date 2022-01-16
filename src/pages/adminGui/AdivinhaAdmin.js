@@ -57,6 +57,11 @@ const AdivinhaAdmin = () => {
             }
         })
     }
+
+    const UpdateAdivinha = id => {
+        
+        window.location= "/admin/updateadivinha/"+id;
+    }
     return (
         <div>
         <AppBarAdmin/>
@@ -125,7 +130,7 @@ const AdivinhaAdmin = () => {
                                         </TableCell>
                                         <TableCell align="center">
                                             <ButtonGroup color="primary" aria-label="buttons">
-                                                <Button onClick={()=>console.log('ola')}>
+                                                <Button onClick={()=>UpdateAdivinha(adivinha.id_adivinha)}>
                                                     EDIT
                                                 </Button>
                                                 <Button onClick={()=>AdivinhaDelete(adivinha.id_adivinha)}>

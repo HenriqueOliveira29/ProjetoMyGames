@@ -56,6 +56,10 @@ const Quizadmin = () => {
             }
         })
     }
+    const UpdateQuiz = id => {
+        
+        window.location= "/admin/quiz/updatequiz/"+id;
+    }
 
     return (
         <div>
@@ -137,7 +141,7 @@ const Quizadmin = () => {
                                         </TableCell>
                                         <TableCell align="center">
                                             <ButtonGroup color="primary" aria-label="buttons">
-                                                <Button onClick={()=>console.log('ola')}>
+                                                <Button onClick={()=>UpdateQuiz(quiz.id_pergunta)}>
                                                     EDIT
                                                 </Button>
                                                 <Button onClick={()=>QuizDelete(quiz.id_pergunta)}>

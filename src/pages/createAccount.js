@@ -1,31 +1,34 @@
 import { useState } from 'react';
-import { createUserWithEmailAndPassword } from "firebase/auth";
+
 import Appbar from '../Appbar'
 import styled from 'styled-components'
+import { auth } from "./firebase-config";
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 function CreateAccount() {
     const [registerEmail, setRegisterEmail] = useState("");
     const [registerPassword, setRegisterPassword] = useState("");
+   
 
     const register = async () => {
-        try {
-            const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
-            console.log(auth.currentUser);
-
-            console.log(user)
-        }
-        catch (error) {
-            console.log(error.message);
-        }
-
+            try {
+                const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
+                if(auth.currentUser!= null){
+                    window.location = "/index"
+                }
+            }
+            catch (error) {
+                console.log(error.message);
+            }
+    
     }
-
+       
+    
 
     return (
         <div>
             <Appbar></Appbar>
             <h1>Create Account</h1>
-            <form method='POST'>
                 <Inputs>
                     <div>
                         <input type="email" required onChange={(event) => { setRegisterEmail(event.target.value) }}></input>
@@ -43,7 +46,7 @@ function CreateAccount() {
                 <Button onClick={register}>
                     <input type="submit" value="Create"></input>
                 </Button>
-            </form>
+            
         </div>
     )
 }

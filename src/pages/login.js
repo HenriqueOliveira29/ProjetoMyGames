@@ -1,31 +1,35 @@
-import { signInWithEmailAndPassword } from 'firebase/auth';
+
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Appbar from '../Appbar'
+import { auth } from "./firebase-config";
+import { signInWithEmailAndPassword } from 'firebase/auth';
+
 
 function LoginPage() {
 
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
 
-
     const login = async () => {
         try {
             const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-            console.log(user)
+            if(auth.currentUser != null){
+                window.location = '/index'
+            }            
+          
         }
-        catch (error) {
+        catch(error) {
             console.log(error.message);
         }
     }
-
     return (
         <Container>
             <Appbar></Appbar>
             <h1>Login</h1>
 
-            <form method="post">
+            
                 <Inputs>
                     <div>
                         <input type="email" required onChange={(event) => { setLoginEmail(event.target.value) }}></input>
@@ -41,21 +45,19 @@ function LoginPage() {
                 <Pass>
                     <div>Forgot Password?</div>
 
-                    <Link to={"/index"}><input type="submit" value="Login" onClick={login}></input></Link>
+                    <input type="submit" value="Login" onClick={login}></input>
                 </Pass>
                 <SignUp>
                     <div>
                         Not a member? <a><Link to={"/createAccount"}>Sign Up</Link></a>
                     </div>
                 </SignUp>
-            </form>
+           
         </Container>
     )
 }
 
-export default LoginPage
-
-//border - bottom: 1px solid silver;
+export default LoginPage;
 
 const Container = styled.div`
     position:absolute;

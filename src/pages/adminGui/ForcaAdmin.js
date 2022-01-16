@@ -56,6 +56,10 @@ const Forca = () => {
             }
         })
     }
+    const Updateforca = id => {
+        
+        window.location= "/admin/forca/updateforca/"+id;
+    }
     return (
         <div>
             <AppBarAdmin/>
@@ -130,7 +134,7 @@ const Forca = () => {
                                         </TableCell>
                                         <TableCell align="center">
                                             <ButtonGroup color="primary" aria-label="buttons">
-                                                <Button onClick={()=>console.log('ola')}>
+                                                <Button onClick={()=>Updateforca(forca.id_forca)}>
                                                     EDIT
                                                 </Button>
                                                 <Button onClick={()=>ForcaDelete(forca.id_forca)}>

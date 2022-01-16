@@ -9,9 +9,13 @@ export default function Hangman() {
   word.map((element, index) =>{
     wideword[index] = '___'
   });
+
+  
+
+  
+ 
+  
   const [contador, setContador] = useState(0);
-
-
   const abc = "A B C D E F G H I J K L M N O P Q R S T U V Y X W Z";
   const abc1 = abc.split(" ");
 
@@ -26,9 +30,7 @@ export default function Hangman() {
         </Title>
         <Letters>
           { 
-            
             wideword.map((element, index) =>{
-              
               return(
                 <Letter key={index}>{element}</Letter>
               )
@@ -43,15 +45,14 @@ export default function Hangman() {
                 key={index}
                 value={element}
                 onClick={(button)=>{
-                    var widewordclone = wideword
+                    const widewordclone1 = wideword
                     word.map((element, index) =>{
-                        
                         if(element == button.target.value){
-                            widewordclone[index] = element;
+                            widewordclone1[index] = element;
                         }
                     })
-                    setWideword(widewordclone);
-                    console.log(wideword);
+                    setWideword(widewordclone1);
+                    console.log(wideword)
                     button.target.style.backgroundColor = 'grey';
                 }
                    
