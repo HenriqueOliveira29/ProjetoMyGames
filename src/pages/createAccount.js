@@ -1,36 +1,46 @@
-import React from 'react'
+import { useState } from 'react';
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import Appbar from '../Appbar'
 import styled from 'styled-components'
 
 function CreateAccount() {
+    const [registerEmail, setRegisterEmail] = useState("");
+    const [registerPassword, setRegisterPassword] = useState("");
+
+    const register = async () => {
+        try {
+            const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
+            console.log(auth.currentUser);
+
+            console.log(user)
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+
+    }
+
+
     return (
         <div>
             <Appbar></Appbar>
             <h1>Create Account</h1>
-            <form method='post'>
+            <form method='POST'>
                 <Inputs>
                     <div>
-                        <input type="email" required></input>
+                        <input type="email" required onChange={(event) => { setRegisterEmail(event.target.value) }}></input>
                         <span></span>
                         <label>Email</label>
                     </div>
+
                     <div>
-                        <input type="text" required></input>
-                        <span></span>
-                        <label>Username</label>
-                    </div>
-                    <div>
-                        <input type="password" required></input>
+                        <input type="password" required onChange={(event) => { setRegisterPassword(event.target.value) }}></input>
                         <span></span>
                         <label>Password</label>
                     </div>
-                    <div>
-                        <input type="password" required></input>
-                        <span></span>
-                        <label>Confirm Password</label>
-                    </div>
+
                 </Inputs>
-                <Button>
+                <Button onClick={register}>
                     <input type="submit" value="Create"></input>
                 </Button>
             </form>
