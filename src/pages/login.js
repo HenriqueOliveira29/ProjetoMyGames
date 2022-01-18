@@ -3,22 +3,30 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Appbar from '../Appbar'
-import { auth } from "./firebase-config";
-import { signInWithEmailAndPassword } from 'firebase/auth';
+//import { auth } from "./firebase-config";
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 
 function LoginPage() {
 
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
+    const auth =  getAuth();
 
     const login = async () => {
         try {
             const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-            if(auth.currentUser != null){
-                window.location = '/index'
-            }            
-          
+            fetch('http://localhost:3001/jogador/showrole/'+loginEmail)
+            .then(res=>res.json())
+            .then((result) => {
+                console.log(result.response[0].user)
+                if(result.response[0].role == "user"){
+                    window.location = "/index"
+                }
+                if(result.response[0].role == "admin"){
+                    window.location = "/admin"
+                }
+            })         
         }
         catch(error) {
             console.log(error.message);

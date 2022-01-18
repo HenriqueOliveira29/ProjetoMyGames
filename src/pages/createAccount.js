@@ -8,13 +8,29 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 function CreateAccount() {
     const [registerEmail, setRegisterEmail] = useState("");
     const [registerPassword, setRegisterPassword] = useState("");
+    const [nickname, setNickname] = useState("");
    
 
     const register = async () => {
             try {
                 const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
                 if(auth.currentUser!= null){
-                    window.location = "/index"
+                    var data = {
+                        email: registerEmail,
+                        nickname: nickname,
+                      };
+                    fetch("http://localhost:3001/jogador/", {
+                        method: "POST",
+                        headers: {
+                          Accept: "application/form-data",
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(data),
+                      })
+                      .then((res) => res.json())
+                      .then(()=>{
+                        window.location = "/guess"
+                      })
                 }
             }
             catch (error) {
@@ -40,6 +56,11 @@ function CreateAccount() {
                         <input type="password" required onChange={(event) => { setRegisterPassword(event.target.value) }}></input>
                         <span></span>
                         <label>Password</label>
+                    </div>
+                    <div>
+                        <input type="text" required onChange={(event) => { setNickname(event.target.value) }}></input>
+                        <span></span>
+                        <label>Nickname</label>
                     </div>
 
                 </Inputs>

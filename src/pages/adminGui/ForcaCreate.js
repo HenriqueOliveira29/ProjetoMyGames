@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import AppBarAdmin from './AppBarAdmin'
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -6,6 +6,8 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -51,19 +53,28 @@ const Forcacreate = () => {
         })
           .then((res) => res.json())
           .then((result) => {
-            if (result["status"] === "ok") {
+            if (result["mensagem"] === "Forca Inserida") {
                 window.location.href = "/admin/forca";
               }
           });
         
       };
+    
+    
+    
+    
     const [palavra, setpalavra] = useState("");
     const [pista, setpista] = useState("");
     const [pontosXpGanhos, setpontosXpGanhos] = useState(0);
     const [moedasGanhas, setmoedasGanhas] = useState(0);
     const [idnivel, setidnivel] = useState(0);
     const [idtema, setidtema] = useState(0);
+    const [temas, setTemas] = useState([]);
 
+    
+    
+    console.log(temas)
+ 
     return (
         <div>
              <AppBarAdmin></AppBarAdmin>
@@ -127,28 +138,75 @@ const Forcacreate = () => {
               ></TextField>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                type = 'number'
-                autoComplete="id_nivel"
-                name="id_nivel"
-                variant="outlined"
-                fullWidth
-                id="id_nivel"
-                label="Nivel"
-                onChange={(e) => setidnivel(e.target.value)}
-              ></TextField>
+            <Select
+                        
+                        name="idnivel"
+                        variant="outlined"
+                        required
+                        fullWidth
+                        id="idnivel"
+                        label="idnivel"
+                        value={idnivel}
+                        onChange={(e)=>{
+                            setidnivel(e.target.value);
+                        }}
+                        >
+                        <MenuItem value={1}>
+                            <em>Muito Facil</em>
+                        </MenuItem>
+                        <MenuItem value={2}>
+                            <em>Facil</em>
+                        </MenuItem>
+                        <MenuItem value={3}>
+                            <em>Medio</em>
+                        </MenuItem>
+                        <MenuItem value={4}>
+                            <em>Dificil</em>
+                        </MenuItem>
+                        <MenuItem value={5}>
+                            <em>Muito Dificil</em>
+                        </MenuItem>
+                        </Select>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                type = 'number'
-                autoComplete="id_tema"
-                name="id_tema"
-                variant="outlined"
-                fullWidth
-                id="id_tema"
-                label="Tema"
-                onChange={(e) => setidtema(e.target.value)}
-              ></TextField>
+            <Select
+                        
+                        name="idtema"
+                        variant="outlined"
+                        required
+                        fullWidth
+                        id="idtema"
+                        label="idtema"
+                        value={idtema}
+                        onChange={(e)=>{
+                            setidtema(e.target.value);
+                        }}
+                        >
+                        
+                          <MenuItem value={1}>
+                          <em>Animal</em>
+                          </MenuItem>
+                          <MenuItem value={2}>
+                          <em>Profissao</em>
+                          </MenuItem>
+                          <MenuItem value={3}>
+                          <em>Personagens</em>
+                          </MenuItem>
+                          <MenuItem value={4}>
+                          <em>Ator</em>
+                          </MenuItem>
+                          <MenuItem value={5}>
+                          <em>Marca</em>
+                          </MenuItem>
+                          <MenuItem value={6}>
+                          <em>Desenho Animado</em>
+                          </MenuItem>
+                          <MenuItem value={7}>
+                          <em>Desportista</em>
+                          </MenuItem>
+                          
+
+                        </Select>
             </Grid>
           </Grid>
           <Button

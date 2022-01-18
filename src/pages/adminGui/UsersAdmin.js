@@ -14,7 +14,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Avatar from '@material-ui/core/Avatar';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { Link } from "react-router-dom";
-import AppBarAdmin from './AppBarAdmin';
+import AppBarAdmin from '../adminGui/AppBarAdmin'
 
 
 const useStyles = makeStyles((theme)=>({
@@ -25,23 +25,23 @@ const useStyles = makeStyles((theme)=>({
     paper: {padding: theme.spacing(2), color: theme.palette.text.secondary},
 }));
 
-const Quizadmin = () => {
+const UsersAdmin = () => {
     const classes = useStyles();
-    const [quiz, setquiz] = useState([]);
+    const [user, setuser] = useState([]);
 
     useEffect(()=>{
-        quizGet();
+        userGet();
     },[])
 
-    const quizGet = () =>{
-        fetch('http://localhost:3001/perguntas')
+    const userGet = () =>{
+        fetch('http://localhost:3001/jogador')
         .then(res=>res.json())
-        .then((result)=>{setquiz(result.response)})
+        .then((result)=>{setuser(result.response)})
         
     }
 
-    const QuizDelete = id =>{
-        fetch('http://localhost:3001/perguntas'+id,{
+    const UserDelete = id =>{
+        fetch('http://localhost:3001/jogador'+id,{
             method:'DELETE',
             headers: {
                 Accept: 'application/form-data',
@@ -52,14 +52,16 @@ const Quizadmin = () => {
         .then((result) => {
             alert(result['mensagem']);
             if(result['status'] === 'ok'){
-                quizGet();
+                userGet();
             }
         })
     }
-    const UpdateQuiz = id => {
+
+    const UserUpdate = email => {
         
-        window.location= "/admin/quiz/updatequiz/"+id;
+        window.location= "/admin/usersupdate/"+email;
     }
+
 
     return (
         <div>
@@ -70,15 +72,8 @@ const Quizadmin = () => {
                     <Box display='flex'>
                         <Box flexGrow={1}>
                             <Typography component="h2" variant="h6" color='primary' gutterBottom>
-                               Perguntas
+                                Users
                             </Typography>
-                        </Box>
-                        <Box >
-                            <Link to="/admin/quiz/createQuiz">
-                                <Button variant='contained' color="primary">
-                                    CREATE
-                                </Button>
-                            </Link>
                         </Box>
                     </Box>
                     <TableContainer component={Paper}>
@@ -86,65 +81,47 @@ const Quizadmin = () => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell align="right">
-                                        ID
+                                        Email
                                     </TableCell>
                                     <TableCell align="center">
-                                        pergunta
+                                        XP
                                     </TableCell>
                                     <TableCell align="left">
-                                        opcao1
+                                        Moedas
                                     </TableCell>
                                     <TableCell align="left">
-                                       opcao2
+                                       nickname
                                     </TableCell>
                                     <TableCell align="left">
-                                        opcao3
-                                    </TableCell>
-                                    <TableCell align="left">
-                                        opcao4
-                                    </TableCell>
-                                    <TableCell align="left">
-                                        opcaoCerta
-                                    </TableCell>
-                                    <TableCell align="center">
-                                        id_nivel
+                                        role
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {
-                                    quiz.map((quiz) => (
-                                    <TableRow key={quiz.id_pergunta}>
+                                    user.map((user) => (
+                                    <TableRow key={user.id_pergunta}>
                                         <TableCell align="right">
-                                            {quiz.id_pergunta}
+                                            {user.Email}
                                         </TableCell>
                                         <TableCell align="center">
-                                                {quiz.pergunta}
+                                            {user.xp}
                                         </TableCell>
                                         <TableCell align="left">
-                                            {quiz.opcao1}
+                                            {user.moedas}
                                         </TableCell>
                                         <TableCell align="left">
-                                            {quiz.opcao2}
+                                            {user.nickname}
                                         </TableCell>
                                         <TableCell align="left">
-                                            {quiz.opcao3}
-                                        </TableCell>
-                                        <TableCell align="left">
-                                            {quiz.opca4}
-                                        </TableCell>
-                                        <TableCell align="left">
-                                            {quiz.opcaoCerta}
-                                        </TableCell>
-                                        <TableCell align="left">
-                                            {quiz.id_nivel}
+                                            {user.role}
                                         </TableCell>
                                         <TableCell align="center">
                                             <ButtonGroup color="primary" aria-label="buttons">
-                                                <Button onClick={()=>UpdateQuiz(quiz.id_pergunta)}>
+                                                <Button onClick={()=>UserUpdate(user.Email)}>
                                                     EDIT
                                                 </Button>
-                                                <Button onClick={()=>QuizDelete(quiz.id_pergunta)}>
+                                                <Button onClick={()=>UserDelete(user.Email)}>
                                                     DELETE
                                                 </Button>
                                             </ButtonGroup>
@@ -162,4 +139,4 @@ const Quizadmin = () => {
     )
 }
 
-export default Quizadmin
+export default UsersAdmin

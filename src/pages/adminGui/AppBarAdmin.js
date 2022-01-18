@@ -1,13 +1,35 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import React, {useState, useEffect} from 'react'
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { auth } from "../firebase-config";
+import { signOut, getAuth, onAuthStateChanged } from 'firebase/auth';
+
 
 const AppBarAdmin = () => {
+
+    const [email, setEmail] = useState("")
+
+    onAuthStateChanged(auth, (user) =>{
+        if(user){
+            setEmail(user.email.toString());
+        }else{
+            console.log(auth);
+        }
+    })
+
+    const logout = async () =>{
+        const auth = getAuth();
+        await signOut(auth);
+        if(auth.currentUser == null){
+            window.location = '/';
+        }
+      
+    }   
     return (
         <Container>
         <Navbar>
             <Logo>
-                <Link to={"/"} style={{ textDecoration: 'none' }}>
+                <Link to={"/admin"} style={{ textDecoration: 'none' }}>
                     <LogoName>My Games</LogoName>
                 </Link>
                 
@@ -22,16 +44,25 @@ const AppBarAdmin = () => {
                 <Link to={"/admin/adivinha"} style={{ textDecoration: 'none' }}>
                     <Action>Adivinhas</Action>
                 </Link>
+                <Link to={"/admin/users"} style={{ textDecoration: 'none' }}>
+                    <Action>Users</Action>
+                </Link>
                     
                     
                     
                 </Actions>
             <Routes>
                 <Route>
-                    <p>User Name</p> 
+                    <p>{email}</p> 
                     <img src='https://cdn-icons.flaticon.com/png/512/552/premium/552848.png?token=exp=1641641627~hmac=2036b8a268f234d5d28ed1451809e8da' alt=''>
                     </img>
                 </Route>
+                <ButtonLogout >
+                            <input type='button' onClick={logout} value='Logout'>
+                                
+                            </input>
+                    </ButtonLogout>
+                        
             </Routes>
         
 
@@ -42,6 +73,27 @@ const AppBarAdmin = () => {
     )
 }
 
+const ButtonLogout = styled.div`
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.3s;
+    :hover{
+        background-color: #009fb7;
+    }
+
+    
+    input{
+        background-color: transparent;
+        border: none;
+        font-size: 18px;
+        font-weight: 700;
+        color: white;
+        cursor: pointer;
+        
+    }
+
+`
+
 const Actions = styled.div`
     width: 50%;
     margin-left: 20px;
@@ -51,9 +103,17 @@ const Actions = styled.div`
 `
 
 const Action = styled.div`
-    padding: 5px;
+
+    
     color: white;
     font-weight: 700;
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.3s;
+    :hover{
+        background-color: #009fb7;
+    }
+
 `
 
 const Container = styled.div`
@@ -87,6 +147,7 @@ const LogoName = styled.div`
 `
 const Routes = styled.div`
     display : flex;
+    align-items: center;
 `
 const Route = styled.div`
     margin:20px;

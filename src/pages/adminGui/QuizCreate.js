@@ -6,6 +6,8 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -52,8 +54,8 @@ const Quizcreate = () => {
         })
           .then((res) => res.json())
           .then((result) => {
-            if (result["status"] === "ok") {
-                window.location.href = "/admin/quiz";
+            if (result["mensagem"] === "Pergunta alterada com sucesso") {
+                window.location = "/admin/quiz";
               }
           });
         
@@ -152,16 +154,35 @@ const Quizcreate = () => {
               ></TextField>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                type = 'number'
-                autoComplete="id_nivel"
-                name="id_nivel"
-                variant="outlined"
-                fullWidth
-                id="id_nivel"
-                label="Nivel"
-                onChange={(e) => setidnivel(e.target.value)}
-              ></TextField>
+            <Select
+                        
+                        name="idnivel"
+                        variant="outlined"
+                        required
+                        fullWidth
+                        id="idnivel"
+                        label="idnivel"
+                        value={idnivel}
+                        onChange={(e)=>{
+                            setidnivel(e.target.value);
+                        }}
+                        >
+                        <MenuItem value={1}>
+                            <em>Muito facik</em>
+                        </MenuItem>
+                        <MenuItem value={2}>
+                            <em>facil</em>
+                        </MenuItem>
+                        <MenuItem value={3}>
+                            <em>medio</em>
+                        </MenuItem>
+                        <MenuItem value={4}>
+                            <em>dificil</em>
+                        </MenuItem>
+                        <MenuItem value={5}>
+                            <em>muito dificil</em>
+                        </MenuItem>
+                        </Select>
             </Grid>
           </Grid>
           <Button

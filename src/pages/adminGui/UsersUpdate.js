@@ -7,9 +7,10 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { useParams } from "react-router-dom";
 import { WbIncandescentOutlined } from "@material-ui/icons";
+import AppBarAdmin from "./AppBarAdmin";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import AppBarAdmin from './AppBarAdmin';
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -31,35 +32,39 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function AdivinhaUpdate() {
+const UsersUpdate = () => {
     const classes = useStyles();
-    const {id} = useParams();
-
+    const {email} = useParams();
+    
     useEffect(()=>{
-        fetch("http://localhost:3001/adivinhas/"+id)
+        fetch("http://localhost:3001/jogador/"+email)
         .then(res=>res.json())
         .then((result)=>{
-            setadivinha(result.response[0].adivinha);
-            setresposta(result.response[0].resposta);
-            setpontosXp(result.response[0].pontosXp);
-            setmoedasGanhas(result.response[0].moedasGanhas);
-            setidnivel(result.response[0].id_nivel);
+            setnickname(result.response[0].nickname);
+            setxp(result.response[0].xp);
+            setmoedas(result.response[0].moedas);
+            setrole(result.response[0].role);
         })
         
-    },[id]);
+    },[email]);
 
+    const [nickname, setnickname] = useState("");
+    const [xp, setxp] = useState(0);
+    const [moedas, setmoedas] = useState(0);
+    const [role, setrole] = useState(0);
+    
     const handleSubmit = event => {
         event.preventDefault();
         var data = {
-            "id_adivinha": id,
-            "adivinha": adivinha,
-            "resposta": resposta,
-            "pontosXp": pontosXp,
-            "moedasGanhas": moedasGanhas,
-            "id_nivel": idnivel,
+            "Email": email,
+            "nickname": nickname,
+            "xp": xp,
+            "moedas": moedas,
+            "role": role,
            
         }
-        fetch("http://localhost:3001/adivinhas/updateAdivinha", {
+        console.log(data);
+        fetch("http://localhost:3001/jogador/changerole", {
             method: "PATCH",
             headers: {
                 Accept: "application/form-data",
@@ -68,52 +73,48 @@ function AdivinhaUpdate() {
             body: JSON.stringify(data),
         }).then(res => res.json())
         .then((result)=>{
-            if(result['mensagem'] == "Adivinha alterada com sucesso"){
-                window.location = "/admin/adivinha";
+            if(result['mensagem'] =="role atualizado com sucesso"){
+                window.location = "/admin/users"
             }
         });
     }
-    const [adivinha, setadivinha] = useState("");
-    const [resposta, setresposta] = useState("");
-    const [pontosXp, setpontosXp] = useState(0);
-    const [moedasGanhas, setmoedasGanhas] = useState(0);
-    const [idnivel, setidnivel] = useState(0);
 
     return (
         <div>
             <AppBarAdmin></AppBarAdmin>
-        <div className={classes.paper}>
+            <div className={classes.paper}>
             <Typography component="h1" variant="h5">
-                Adivinha
+                Forca
             </Typography>
             <form className={classes.form} onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                         <TextField 
-                        name="adivinha"
+                        name="nickname"
                         variant="outlined"
                         required
                         fullWidth
-                        id="adivinha"
-                        label="adivinha"
-                        value={adivinha}
+                        id="nickname"
+                        label="nickname"
+                        value={nickname}
                         onChange={(e)=>{
-                            setadivinha(e.target.value);
+                            setnickname(e.target.value);
                         }}
                         autoFocus>
                         </TextField>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField 
-                        name="resposta"
+                        type='number'
+                        name="xp"
                         variant="outlined"
                         required
                         fullWidth
-                        id="resposta"
-                        label="resposta"
-                        value={resposta}
+                        id="xp"
+                        label="xp"
+                        value={xp}
                         onChange={(e)=>{
-                            setresposta(e.target.value);
+                            setxp(e.target.value);
                         }}
                         >
                         </TextField>
@@ -121,67 +122,42 @@ function AdivinhaUpdate() {
                     <Grid item xs={12} sm={6}>
                         <TextField 
                         type="number"
-                        name="pontosXp"
+                        name="moedas"
                         variant="outlined"
                         required
                         fullWidth
-                        id="pontosXp"
-                        label="pontosXp"
-                        value={pontosXp}
+                        id="moedas"
+                        label="moedas"
+                        value={moedas}
                         onChange={(e)=>{
-                            setpontosXp(e.target.value);
+                            setmoedas(e.target.value);
                         }}
                         >
                         </TextField>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField 
-                        type="number"
-                        name="moedasGanhas"
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="moedasGanhas"
-                        label="moedasGanhas"
-                        value={moedasGanhas}
-                        onChange={(e)=>{
-                            setmoedasGanhas(e.target.value);
-                        }}
-                        >
-                        </TextField>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                    <Select
+                        <Select
                         
-                        name="idnivel"
+                        name="role"
                         variant="outlined"
                         required
                         fullWidth
-                        id="idnivel"
-                        label="idnivel"
-                        value={idnivel}
+                        id="role"
+                        label="role"
+                        value={role}
                         onChange={(e)=>{
-                            setidnivel(e.target.value);
+                            setrole(e.target.value);
                         }}
                         >
-                        <MenuItem value={1}>
-                            <em>Muito Facil</em>
+                        <MenuItem value="user">
+                            <em>user</em>
                         </MenuItem>
-                        <MenuItem value={2}>
-                            <em>Facil</em>
-                        </MenuItem>
-                        <MenuItem value={3}>
-                            <em>Medio</em>
-                        </MenuItem>
-                        <MenuItem value={4}>
-                            <em>Dificil</em>
-                        </MenuItem>
-                        <MenuItem value={5}>
-                            <em>Muito Dificil</em>
+                        <MenuItem value="admin">
+                            <em>admin</em>
                         </MenuItem>
                         </Select>
                     </Grid>
-                   
+                    
                 </Grid>
                 <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>Update</Button>
             </form>
@@ -191,4 +167,4 @@ function AdivinhaUpdate() {
     )
 }
 
-export default AdivinhaUpdate
+export default UsersUpdate

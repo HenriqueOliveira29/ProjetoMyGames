@@ -17,7 +17,8 @@ import Forcacreate from './adminGui/ForcaCreate';
 import Forcaupdate from './adminGui/ForcaUpdate';
 import Quizcreate from './adminGui/QuizCreate';
 import Quizupdate from './adminGui/Quizupdate';
-import { auth } from "./firebase-config";
+import UsersAdmin from './adminGui/UsersAdmin';
+import UsersUpdate from './adminGui/UsersUpdate';
 
 
 
@@ -43,6 +44,8 @@ function Routes2() {
                 <Route exact path='/admin/forca/createForca' element={<Forcacreate/>}></Route>
                 <Route exact path='/admin/quiz/updatequiz/:id' element={<Quizupdate></Quizupdate>}></Route>
                 <Route exact path='/admin/quiz/createQuiz' element={<Quizcreate/>}></Route>
+                <Route exact path='/admin/users' element={<UsersAdmin/>}></Route>
+                <Route exact path='/admin/usersupdate/:email' element={<UsersUpdate/>}></Route>
                 
             </Routes>
         </BrowserRouter>

@@ -1,23 +1,82 @@
 import React, { useState, useEffect } from "react";
 import AppBarUser from "./AppBarUser";
 import styled from "styled-components";
-import Parser from "html-react-parser";
+import { auth } from "../firebase-config";
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default function Hangman() {
-  const word = ['M', 'A', 'C' , 'A', 'C', 'O']
+  const [word, setWord] = useState([]);
   const [wideword, setWideword] = useState([]);
-  word.map((element, index) =>{
-    wideword[index] = '___'
-  });
+  const [guess, setGuess] = useState("");
+  const [erros, setErrors] = useState(10);
+  if(word.length != 0){
+    word.palavra.split('').map((element, index) =>{
+      if(element != " "){
+        wideword[index] = '___'
+      }
+    
+    });
+  }
 
+  const [email, setEmail] = useState("");
+
+  onAuthStateChanged(auth, (user) =>{
+      if(user){
+          setEmail(user.email.toString());
+      }else{
+          console.log(auth);
+      }
+  })
   
 
-  
- 
-  
+  useEffect(()=>{
+    if(word.length == 0){
+      fetch('http://localhost:3001/forcas/random')
+      .then(res=>res.json())
+      .then((result) => {
+      setWord(result.response[0]);
+    })
+    }
+    
+  })
+
   const [contador, setContador] = useState(0);
   const abc = "A B C D E F G H I J K L M N O P Q R S T U V Y X W Z";
   const abc1 = abc.split(" ");
+
+  const InserirHistorico = () =>{
+        
+    var data = {
+      email: email,
+      id_forca: word.id_forca
+    };
+    fetch('http://localhost:3001/historicoforca/', {
+        method: "POST",
+        headers: {
+          Accept: "application/form-data",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then((res) => res.json())
+}
+const addCoinsXp = () => {
+  var data = {
+      "Email": email,
+      "xp": word.pontosXpGanhos,
+      "moedas": word.moedasGanhas,
+      
+     
+  }
+  fetch("http://localhost:3001/jogador/addcoins", {
+      method: "PATCH",
+      headers: {
+          Accept: "application/form-data",
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+  }).then(res => res.json());
+  
+}
 
   
 
@@ -28,6 +87,12 @@ export default function Hangman() {
         <Title>
           <h1>Hangman Game</h1>
         </Title>
+        <Descricao>
+          {word.pista}
+        </Descricao>
+        <Errors>
+          Tentativas: {erros}/10
+        </Errors>
         <Letters>
           { 
             wideword.map((element, index) =>{
@@ -46,13 +111,26 @@ export default function Hangman() {
                 value={element}
                 onClick={(button)=>{
                     const widewordclone1 = wideword
-                    word.map((element, index) =>{
+                    word.palavra.toUpperCase().split("").map((element, index) =>{
+                      
                         if(element == button.target.value){
                             widewordclone1[index] = element;
                         }
+                        
                     })
+                    
                     setWideword(widewordclone1);
-                    console.log(wideword)
+                    console.log(wideword.toString());
+                   
+                    if(wideword.toString().replaceAll(',', "").toLowerCase() == word.palavra.replaceAll(" ", "").toLowerCase()){
+                      alert("Acertou na palavra parabens");
+                      addCoinsXp();
+                      InserirHistorico();
+                        setTimeout(()=>{
+                          window.location = "/index";
+                      },1000);
+                    }
+                   
                     button.target.style.backgroundColor = 'grey';
                 }
                    
@@ -64,14 +142,36 @@ export default function Hangman() {
           })}
         </ABC>
         <Advinhar>
-          <Input type="text" placeholder="Adivinhe a palavra"></Input>
-          <Button1 type="button" value="ADIVINHAR"></Button1>
+          <Input type="text" placeholder="Adivinhe a palavra" onChange={(e)=>{
+              setGuess(e.target.value);
+          }}></Input>
+          <Button1 type="button" value="ADIVINHAR" onClick={()=>{
+            if(guess.toLowerCase() == word.palavra.toLowerCase()){
+              alert("Acertou Parabens");
+              addCoinsXp();
+              InserirHistorico();
+              setTimeout(()=>{
+                window.location = "/index";
+            },1000);
+            }
+            else{
+              setErrors(erros-1);
+              alert("Resposta Errada");
+            }
+          }}></Button1>
         </Advinhar>
       </Container>
     </div>
   );
 }
 
+const Descricao = styled.div`
+  
+`
+
+const Errors = styled.div`
+
+`
 const Container = styled.div`
   width: 100vw;
   height: 90vh;

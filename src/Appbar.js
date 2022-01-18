@@ -65,5 +65,13 @@ const Route = styled.div`
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.3s;
+    :hover{
+        background-color: #009fb7;
+    }
+
+    
 `
 

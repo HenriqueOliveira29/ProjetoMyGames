@@ -1,13 +1,24 @@
 import React, {useState, useEffect} from 'react'
 import AppBarUser from './AppBarUser'
 import styled from 'styled-components'
+import { auth } from "../firebase-config";
+import { signOut, getAuth, onAuthStateChanged } from 'firebase/auth';
 
 export default function Guess() {
     const [wordguess, setwordguess] = useState("");
     const [guess, setGuess] = useState([]);
+    const [email, setEmail] = useState("");
+
+    onAuthStateChanged(auth, (user) =>{
+        if(user){
+            setEmail(user.email.toString());
+        }else{
+            console.log(auth);
+        }
+    })
 
     useEffect(() => {
-        fetch("http://localhost:3001/adivinhas/1")
+        fetch("http://localhost:3001/adivinhas/getadivinha")
         .then(res => res.json())
         .then((result)=> {
             setGuess(result.response[0])
@@ -16,6 +27,40 @@ export default function Guess() {
         
     }, [])
 
+    const InserirHistorico = () =>{
+        
+        var data = {
+          email: email,
+          id_adivinha: guess.id_adivinha
+        };
+        fetch('http://localhost:3001/historicoadivinha/', {
+            method: "POST",
+            headers: {
+              Accept: "application/form-data",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }).then((res) => res.json())
+    }
+
+    const addCoinsXp = () => {
+        var data = {
+            "Email": email,
+            "xp": guess.pontosXp,
+            "moedas": guess.moedasGanhas,
+            
+           
+        }
+        fetch("http://localhost:3001/jogador/addcoins", {
+            method: "PATCH",
+            headers: {
+                Accept: "application/form-data",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        }).then(res => res.json());
+    
+    }
     return (
         <div>
             <AppBarUser/>
@@ -36,11 +81,19 @@ export default function Guess() {
 
                 <Button onClick={()=>{
                     if(guess.resposta.trim().toLowerCase() == wordguess.trim().toLowerCase()){
-                        alert("Acertou parabens")
+                        alert("Acertou Parabens");
+                        addCoinsXp();
+                        InserirHistorico();
+                        setTimeout(()=>{
+                            window.location.reload();
+                        },2000);
                         
+                       
                     }
                     else{
-                        alert("Tente Novamente")
+                        
+                        alert("Errado, tente novamente")
+                        
                     }
                 }}>
                     GUESS
@@ -48,7 +101,19 @@ export default function Guess() {
             </Container>
         </div>
     )
-}
+    }
+  
+
+const Resultwrong = styled.div`
+    p{
+        color: red;
+    }
+`
+const Result = styled.div`
+    p{
+        color: green;
+    }
+`
 const Container = styled.div`
     position: fixed;
     width: 100vw;
@@ -95,4 +160,4 @@ const Button = styled.button`
     :hover{
         background-color: #02c39a;
     }
-`
+`;

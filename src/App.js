@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import PaginaInicial from './pages/paginaInicial';
+
 import Routes2 from './pages';
 function App() {
   return (

@@ -7,6 +7,9 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { useParams } from "react-router-dom";
 import { WbIncandescentOutlined } from "@material-ui/icons";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import AppBarUser from "../userGui/AppBarUser";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -90,6 +93,8 @@ const Quizupdate = () => {
     const [idnivel, setidnivel] = useState(0);
    
     return (
+        <div>
+            <AppBarUser/>
         <div className={classes.paper}>
             <Typography component="h1" variant="h5">
                 Pergunta
@@ -188,8 +193,8 @@ const Quizupdate = () => {
                         </TextField>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField 
-                        type="number"
+                    <Select
+                        
                         name="idnivel"
                         variant="outlined"
                         required
@@ -201,13 +206,29 @@ const Quizupdate = () => {
                             setidnivel(e.target.value);
                         }}
                         >
-                        </TextField>
+                        <MenuItem value={1}>
+                            <em>Muito Facil</em>
+                        </MenuItem>
+                        <MenuItem value={2}>
+                            <em>Facil</em>
+                        </MenuItem>
+                        <MenuItem value={3}>
+                            <em>Medio</em>
+                        </MenuItem>
+                        <MenuItem value={4}>
+                            <em>Dificil</em>
+                        </MenuItem>
+                        <MenuItem value={5}>
+                            <em>Muito Dificil</em>
+                        </MenuItem>
+                        </Select>
                     </Grid>
                    
                 </Grid>
                 <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>Update</Button>
             </form>
             
+        </div>
         </div>
     )
 }

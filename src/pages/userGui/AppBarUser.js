@@ -3,42 +3,49 @@ import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { auth } from "../firebase-config";
-import { signOut } from 'firebase/auth';
+import { signOut, getAuth, onAuthStateChanged } from 'firebase/auth';
 
 
 export default function AppBarUser() {
-    const user  = "";
-    useEffect(async ()=>{
-        
-         user = await auth.currentUser.email;
-         console.log(auth.currentUser.email);
-    },[])
+    const [email, setEmail] = useState("")
+
+    onAuthStateChanged(auth, (user) =>{
+        if(user){
+            setEmail(user.email.toString());
+        }else{
+            console.log(auth);
+        }
+    })
+
     
     
- 
     
     const logout = async () =>{
+        const auth = getAuth();
         await signOut(auth);
-        window.location = '/';
+        if(auth.currentUser == null){
+            window.location = '/';
+        }
+      
     }   
 
     return (
         <Container>
             <Navbar>
                 <Logo>
-                    <Link to={"/"} style={{ textDecoration: 'none' }}>
+                    <Link to={"/index"} style={{ textDecoration: 'none' }}>
                         <LogoName>MyGames</LogoName>
                     </Link>
                     
                 </Logo>
                 <Routes>
                     <Route>
-                        <p> ola, {user}</p> 
+                        <p> ola, {email}</p> 
                         <img src='https://cdn-icons.flaticon.com/png/512/552/premium/552848.png?token=exp=1641641627~hmac=2036b8a268f234d5d28ed1451809e8da' alt=''>
                         </img>
                     </Route>
                     <ButtonLogout >
-                            <input type='button' onClick={logout} value='logout'>
+                            <input type='button' onClick={logout} value='Logout'>
                                 
                             </input>
                     </ButtonLogout>
@@ -57,7 +64,22 @@ export default function AppBarUser() {
 }
 
 const ButtonLogout = styled.div`
+padding: 10px;
+    border-radius: 10px;
+    transition: 0.3s;
+    :hover{
+        background-color: #009fb7;
+    }
+
+input{
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
     cursor: pointer;
+    
+}
 
 `
 

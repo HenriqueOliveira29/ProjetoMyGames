@@ -2,14 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAvUvAKaTwFO_xgj6w5GL8mTKX9eP388iw",
-    authDomain: "mygames-8dfa0.firebaseapp.com",
-    projectId: "mygames-8dfa0",
-    storageBucket: "mygames-8dfa0.appspot.com",
-    messagingSenderId: "857254329801",
-    appId: "1:857254329801:web:45936cc9ef3de4d99a3c18",
-    measurementId: "G-Q8RE427MZE"
-  };
+  apiKey: "AIzaSyDu4eRFuoLagn0wWBzhi8zvn30vwowZyaA",
+  authDomain: "mygames-69c5c.firebaseapp.com",
+  projectId: "mygames-69c5c",
+  storageBucket: "mygames-69c5c.appspot.com",
+  messagingSenderId: "846607193668",
+  appId: "1:846607193668:web:c0c0f7a5720fc573118e11"
+};
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);

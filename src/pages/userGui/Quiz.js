@@ -1,34 +1,33 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import AppBarUser from './AppBarUser'
 import styled from 'styled-components'
 
+
 function Quiz() {
      const [questionNumber, SetquestionNumber] = useState(1);
-     const questions = [
-         {
-             'pergunta': "Who as futsal word champion in 2021",
-             'opcao1': 'Portugal',
-             'opcao2': 'Espanha',
-             'opcao3': 'Polonia',
-             'opcao4': 'Brazil',
-             'opcaoCerta': 'Portugal'
-         },
-         {
-            'pergunta': "Qual a capital de Portugal",
-             'opcao1': 'Madrid',
-             'opcao2': 'Porto',
-             'opcao3': 'Lisboa',
-             'opcao4': 'Braga',
-             'opcaoCerta': 'Lisboa'
-         }
-         ,
-     ];
+     const [questions, setQuestions] = useState([]);
+     const [respostascertas, setCertas] = useState(0);
+    
+        
+    
+     useEffect(() => {
+        readPerguntas();
+     }, [])
 
-
+     const readPerguntas = () => {
+         fetch('http://localhost:3001/perguntas/randompergunta')
+        .then(res => res.json())
+        .then((result)=>{
+            setQuestions(result)
+        })
+     }
+     
     return (
         <div>
            <AppBarUser/>
-           <Container>
+           {
+               (questions.length > 0) ?
+               <Container>
                <QuestionNumber>
                    {questionNumber}/10
                </QuestionNumber>
@@ -39,18 +38,22 @@ function Quiz() {
                    <Button type='button' value = {questions[questionNumber-1].opcao1} onClick={(element)=>{
                        if(element.target.value === questions[questionNumber-1].opcaoCerta){
                             element.target.style.backgroundColor = '#70E000';
+                            setCertas(respostascertas+1);
                        }
                        else{
                             element.target.style.backgroundColor = '#EB1D1D';
                        }
-                       if(questionNumber+1===questions.length){
+                       if(questionNumber+1<=questions.length){
                         setTimeout(()=>{
                             SetquestionNumber(questionNumber+1);
                             element.target.style.backgroundColor = 'white';
-                        },3000);
+                        },2000);
                        }
                        else{
-                        window.location.pathname = '/index';
+                        alert("Acertou " + respostascertas);
+                        setTimeout(()=>{
+                            window.location.pathname = '/index';
+                        },3000);
                     }
                       
                    }}>  
@@ -58,18 +61,23 @@ function Quiz() {
                    <Button type='button' value = {questions[questionNumber-1].opcao2} onClick={(element)=>{
                        if(element.target.value === questions[questionNumber-1].opcaoCerta){
                         element.target.style.backgroundColor = '#70E000';
+                        setCertas(respostascertas+1);
                    }
                    else{
                         element.target.style.backgroundColor = '#EB1D1D';
                    }
-                   if(questionNumber+1===questions.length){
+                   if(questionNumber+1<=questions.length){
                     setTimeout(()=>{
                         SetquestionNumber(questionNumber+1);
                         element.target.style.backgroundColor = 'white';
                     },3000);
                     }
                     else{
-                        window.location.pathname = '/index';
+                        alert("Acertou " + respostascertas);
+                        setTimeout(()=>{
+                            window.location.pathname = '/index';
+                        },3000);
+                        
                     }
                     }}>
                         
@@ -79,12 +87,13 @@ function Quiz() {
                <Button type='button' value = {questions[questionNumber-1].opcao3} onClick={(element)=>{
                        if(element.target.value === questions[questionNumber-1].opcaoCerta){
                         element.target.style.backgroundColor = '#70E000';
+                        setCertas(respostascertas+1);
                         
                    }
                    else{
                         element.target.style.backgroundColor = '#EB1D1D';
                    }
-                   if(questionNumber+1===questions.length){
+                   if(questionNumber+1<=questions.length){
                        
                    setTimeout(()=>{
                             SetquestionNumber(questionNumber+1);
@@ -92,19 +101,23 @@ function Quiz() {
                         },3000);
                     }
                     else{
-                        window.location.pathname = '/index';
+                        alert("Acertou " + respostascertas);
+                        setTimeout(()=>{
+                            window.location.pathname = '/index';
+                        },3000);
                     }
                     }}>  
                     </Button>
-                    <Button type='button' value = {questions[questionNumber-1].opcao4} onClick={(element)=>{
+                    <Button type='button' value = {questions[questionNumber-1].opca4} onClick={(element)=>{
                         
                       if(element.target.value === questions[questionNumber-1].opcaoCerta){
                         element.target.style.backgroundColor = '#70E000';
+                        setCertas(respostascertas+1);
                    }
                    else{
                         element.target.style.backgroundColor = '#EB1D1D';
                    }
-                   if(questionNumber+1===questions.length){
+                   if(questionNumber+1<=questions.length){
                        console.log(questions.length);
                        console.log(questionNumber+1);
                         setTimeout(()=>{
@@ -115,13 +128,21 @@ function Quiz() {
                     
                     }
                     else{
-                        window.location.pathname = '/index';
+                        alert("Acertou " + respostascertas);
+                        setTimeout(()=>{
+                            window.location.pathname = '/index';
+                        },3000);
                     }
                     }}>  
                     </Button>
                 </ParButton>
                
            </Container>
+               :
+               console.log("")
+           
+           }
+          
            
         </div>
     )
