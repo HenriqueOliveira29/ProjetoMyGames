@@ -29,7 +29,7 @@ function CreateAccount() {
                       })
                       .then((res) => res.json())
                       .then(()=>{
-                        window.location = "/guess"
+                        window.location = "/index"
                       })
                 }
             }
